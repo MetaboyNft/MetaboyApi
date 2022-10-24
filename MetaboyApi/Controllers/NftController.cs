@@ -34,9 +34,9 @@ namespace MetaboyApi.Controllers
         {
             _config = config;
             var clientOptions = new ServiceBusClientOptions() { TransportType = ServiceBusTransportType.AmqpWebSockets };
-            AzureServiceBusClient = new ServiceBusClient(_config["Settings:AzureServiceBusConnectionString"], clientOptions);
+            AzureServiceBusClient = new ServiceBusClient(_config.GetValue<string>("AzureServiceBusConnectionString"), clientOptions);
             AzureServiceBusSender = AzureServiceBusClient.CreateSender(AzureServiceBusQueuName);
-            AzureSqlServerConnectionString = _config["Settings:AzureSqlConnectionString"];
+            AzureSqlServerConnectionString = _config.GetValue<string>("AzureSqlConnectionString");
         }
 
         [HttpPost]
