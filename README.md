@@ -18,6 +18,7 @@ If it passes these checks it will add a message to the Azure Service Bus queue w
 ## Setup Local
 To host locally create an appsettings.json file in the root directory with the following values, replacing with your own values: 
 
+```json
 {
   "Logging": {
     "LogLevel": {
@@ -29,6 +30,7 @@ To host locally create an appsettings.json file in the root directory with the f
   "AzureServiceBusConnectionString": "",
   "AzureSqlConnectionString": ""
 }
+```
 
 ## Setup Azure
-Create two appsetting variables on your Azure deployment, one for "AzureServiceBusConnectionString" and one for "AzureSqlConnectionString"
+Create two appsetting variables on your Azure deployment, one for the AzureServiceBusConnectionString and one for the AzureSqlConnectionString.
