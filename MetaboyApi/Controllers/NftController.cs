@@ -18,7 +18,7 @@ namespace MetaboyApi.Controllers
         static string AzureServiceBusConnectionString = "";
 
         // name of your Service Bus queue
-        static string AzureServiceBusQueuName = "main";
+        static string AzureServiceBusQueueName = "main";
 
         // the client that owns the connection and can be used to create senders and receivers
         static ServiceBusClient AzureServiceBusClient;
@@ -35,7 +35,7 @@ namespace MetaboyApi.Controllers
             _config = config;
             var clientOptions = new ServiceBusClientOptions() { TransportType = ServiceBusTransportType.AmqpWebSockets };
             AzureServiceBusClient = new ServiceBusClient(_config.GetValue<string>("AzureServiceBusConnectionString"), clientOptions);
-            AzureServiceBusSender = AzureServiceBusClient.CreateSender(AzureServiceBusQueuName);
+            AzureServiceBusSender = AzureServiceBusClient.CreateSender(AzureServiceBusQueueName);
             AzureSqlServerConnectionString = _config.GetValue<string>("AzureSqlConnectionString");
         }
 
