@@ -15,6 +15,13 @@ This endpoint will check if the nft data exists in the SQL database,if the addre
 
 If it passes these checks it will add a message to the Azure Service Bus queue which will then be processed by the [Message Processor](https://github.com/MetaboyNft/MetaboyApiMessageProcessor) for claiming the NFT.
 
+## Redeemable Endpoint
+You can check if an NFT can be redeemed by an address and the nftData with this endpoint https://localhost:7237/api/nft/redeemable (Local) or https://metaboy.azurewebsites.net/api/nft/redeemable (Production).
+
+Send a GET request like so, replacing with your own address/ nftdata: https://metaboy.azurewebsites.net/api/nft/redeemable?address=0x1c65331556cff08bb06c56fbb68fb0d1d2194f8A&nftData=0x14e15ad24d034f0883e38bcf95a723244a9a22e17d47eb34aa2b91220be0adc4
+
+The endpoint will return True or False if the Nft can be redeemed by an address.
+
 ## Database Setup
 The database should have the following tables:
 

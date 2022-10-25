@@ -120,8 +120,41 @@ namespace MetaboyApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-          
+        }
 
+        [HttpGet]
+        [Route("redeemable")]
+        public async Task<IActionResult> Redeemable(string address, string nftData)
+        {
+            try
+            {
+                using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
+                {
+                    await db.OpenAsync();
+                    var canClaim = new { Address = address, NftData = nftData };
+                    var canClaimSql = "select case when b.claimeddate is null then 'True' else 'False' End as Redeemable  from allowlist a left join claimed b on a.address = b.address and a.nftdata = b.nftdata where a.address = @Address and a.nftdata = @NftData";
+                    var canClaimResult = await db.QueryAsync<CanClaim>(canClaimSql, canClaim);
+                    if (canClaimResult.Count() == 1)
+                    {
+                        if (canClaimResult.First().Redeemable == "True")
+                        {
+                            return Ok(canClaimResult.First().Redeemable);
+                        }
+                        else
+                        {
+                            return BadRequest(canClaimResult.First().Redeemable);
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest("False");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
