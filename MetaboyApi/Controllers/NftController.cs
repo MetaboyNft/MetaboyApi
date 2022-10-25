@@ -126,6 +126,7 @@ namespace MetaboyApi.Controllers
         [Route("redeemable")]
         public async Task<IActionResult> Redeemable(string address, string nftData)
         {
+            int? validStatus = null;
             try
             {
                 using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
@@ -138,17 +139,26 @@ namespace MetaboyApi.Controllers
                     {
                         if (canClaimResult.First().Redeemable == "True")
                         {
-                            return Ok(canClaimResult.First().Redeemable);
+                            validStatus = 0;
                         }
                         else
                         {
-                            return BadRequest(canClaimResult.First().Redeemable);
+                            validStatus = 1;
                         }
                     }
                     else
                     {
-                        return BadRequest("False");
+                        validStatus = 1;
                     }
+                }
+
+                if (validStatus == 0)
+                {
+                    return Ok("True");
+                }
+                else
+                {
+                    return BadRequest("False");
                 }
             }
             catch (Exception ex)
