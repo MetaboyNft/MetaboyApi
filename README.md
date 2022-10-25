@@ -39,3 +39,5 @@ To host locally create an appsettings.json file in the root directory with the f
 
 ## Setup Azure
 Create two appsetting variables on your Azure deployment, one for the AzureServiceBusConnectionString and one for the AzureSqlConnectionString.
+
+Finally, setup an Azure Service Bus queue with the name "main".
