@@ -46,9 +46,9 @@ namespace MetaboyApi.Controllers
             int? validStatus = null;
             try
             {
-                using (IDbConnection db = new SqlConnection(AzureSqlServerConnectionString))
+                using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
                 {
-                    db.Open();
+                    await db.OpenAsync();
                     var claimableParameters = new { NftData = nftReciever.NftData };
                     var claimableSql = "select * from claimable where nftdata = @NftData";
                     var claimableResult = await db.QueryAsync<Claimable>(claimableSql, claimableParameters);
