@@ -2,7 +2,7 @@
 .NET 6 project for the MetaBoy API. 
 
 ## Nft Claim Endpoint
-Nft Claims endpoint is available at https://localhost:7237/api/nft/claim (Local) or https://metaboyapi.azurewebsites.net/api/nft/claim (Production) with a POST of the following JSON
+Nft Claims endpoint is available at https://localhost:7237/api/nft/claim (Local) or https://metaboy.azurewebsites.net/api/nft/claim (Production) with a POST of the following JSON
 
 ```json
 {
