@@ -166,5 +166,25 @@ namespace MetaboyApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("claimable")]
+        public async Task<IActionResult> Claimable()
+        {
+            try
+            {
+                using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
+                {
+                    await db.OpenAsync();
+                    var canClaimSql = "select * from claimable";
+                    var canClaimResult = await db.QueryAsync<Claimable>(canClaimSql);
+                    return Ok(canClaimResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
