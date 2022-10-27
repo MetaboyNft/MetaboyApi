@@ -48,3 +48,6 @@ To host locally create an appsettings.json file in the root directory with the f
 Create two appsetting variables on your Azure deployment, one for the AzureServiceBusConnectionString and one for the AzureSqlConnectionString.
 
 Finally, setup an Azure Service Bus queue with the name "main".
+
+## Swagger
+You can test the API with our Swagger endpoint at https://metaboy.azurewebsites.net/swagger
