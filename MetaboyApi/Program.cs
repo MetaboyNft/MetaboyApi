@@ -38,7 +38,7 @@ namespace MetaboyApi
             new RateLimitRule
                 {
                     Endpoint = "*",
-                    Period = "60s",
+                    Period = "10s",
                     Limit = 1
                 }
             };
