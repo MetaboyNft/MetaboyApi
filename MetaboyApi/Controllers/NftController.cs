@@ -39,6 +39,22 @@ namespace MetaboyApi.Controllers
             AzureSqlServerConnectionString = _config.GetValue<string>("AzureSqlConnectionString");
         }
 
+        /// <summary>
+        /// Adds a claim
+        /// </summary>
+        /// <param name="nftReciever"></param>
+        /// <returns>If the claim was added</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /claim
+        ///     {
+        ///         "Address" : "0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd",
+        ///         "NftData" : "0x14e15ad24d034f0883e38bcf95a723244a9a22e17d47eb34aa2b91220be0adC4"
+        ///     }
+        /// </remarks>
+        /// <response code="200">If a claim is added</response>
+        /// <response code="400">If something is wrong with the request</response>
         [HttpPost]
         [Route("claim")]
         public async Task<IActionResult> Send(NftReciever nftReciever)
@@ -122,6 +138,19 @@ namespace MetaboyApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Checks if user is able to redeem a claim
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="nftData"></param>
+        /// <returns>If the user can redeem a claim</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /redeemable?address=0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd&amp;nftData=0x14e15ad24d034f0883e38bcf95a723244a9a22e17d47eb34aa2b91220be0adC4
+        /// </remarks>
+        /// <response code="200">If a claim is redeemable</response>
+        /// <response code="400">If something is wrong with the request</response>
         [HttpGet]
         [Route("redeemable")]
         public async Task<IActionResult> Redeemable(string address, string nftData)
@@ -167,6 +196,16 @@ namespace MetaboyApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Displays all claimable NFTs
+        /// </summary>
+        /// <returns>The claimable NFTs</returns>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /claimable
+        /// </remarks>
+        /// <response code="200">The list of claimable NFTs</response>
+        /// <response code="400">If something is wrong with the request</response>
         [HttpGet]
         [Route("claimable")]
         public async Task<IActionResult> Claimable()
