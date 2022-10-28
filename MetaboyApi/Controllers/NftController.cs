@@ -190,7 +190,7 @@ namespace MetaboyApi.Controllers
                 }
                 else
                 {
-                    return BadRequest(claim);
+                    return BadRequest(claim.Amount);
                 }
             }
             catch (Exception ex)
