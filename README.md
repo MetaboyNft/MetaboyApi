@@ -25,7 +25,7 @@ The endpoint will return True or False if the Nft can be redeemed by an address.
 ## Database Setup
 The database should have the following tables:
 
-![image](https://user-images.githubusercontent.com/5258063/197443450-b191d9a9-8573-4597-ab83-734c4775d8fc.png)
+![image](https://user-images.githubusercontent.com/5258063/198419811-2a09c066-99a7-45c7-8a5d-d8638ae080f6.png)
 
 ## Setup Local
 To host locally create an appsettings.json file in the root directory with the following values, replacing with your own values: 
