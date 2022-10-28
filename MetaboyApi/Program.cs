@@ -39,7 +39,7 @@ namespace MetaboyApi
                 {
                     Endpoint = "*",
                     Period = "10s",
-                    Limit = 1
+                    Limit = 10
                 }
             };
             });
