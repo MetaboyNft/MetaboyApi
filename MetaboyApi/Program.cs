@@ -1,4 +1,3 @@
-using AspNetCoreRateLimit;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -22,26 +21,6 @@ namespace MetaboyApi
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                     });
-            });
-
-            builder.Services.AddMemoryCache();
-            builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-            builder.Services.AddInMemoryRateLimiting();
-            builder.Services.Configure<IpRateLimitOptions>(options =>
-            {
-                options.EnableEndpointRateLimiting = true;
-                options.StackBlockedRequests = false;
-                options.HttpStatusCode = 429;
-                options.RealIpHeader = "X-Real-IP";
-                options.GeneralRules = new List<RateLimitRule>
-        {
-            new RateLimitRule
-                {
-                    Endpoint = "*",
-                    Period = "10s",
-                    Limit = 10
-                }
-            };
             });
 
             builder.Services.AddControllers();
@@ -72,7 +51,6 @@ namespace MetaboyApi
             app.UseCors("AllowAll");
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.UseIpRateLimiting();
 
             // Configure the HTTP request pipeline.
 
