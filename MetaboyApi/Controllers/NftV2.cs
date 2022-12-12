@@ -156,7 +156,6 @@ namespace MetaboyApi.Controllers
         public async Task<IActionResult> Redeemable(string address)
         {
             int? validStatus = null;
-            CanClaim claim = new CanClaim();
             try
             {
                 using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
