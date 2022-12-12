@@ -176,7 +176,7 @@ namespace MetaboyApi.Controllers
 
                     if (validStatus == 0)
                     {
-                        return Ok(canClaimResult);
+                        return Ok(canClaimResult.ToList());
                     }
                     else
                     {
