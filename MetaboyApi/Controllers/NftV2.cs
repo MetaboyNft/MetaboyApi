@@ -43,7 +43,7 @@ namespace MetaboyApi.Controllers
         /// <summary>
         /// Adds a claim
         /// </summary>
-        /// <param name="nftReciever"></param>
+        /// <param name="nftRecievers"></param>
         /// <returns>If the claim was added</returns>
         /// <remarks>
         /// Sample request:
@@ -58,52 +58,50 @@ namespace MetaboyApi.Controllers
         /// <response code="400">If something is wrong with the request</response>
         [HttpPost]
         [Route("claim")]
-        public async Task<IActionResult> Send(NftReciever nftReciever)
+        public async Task<IActionResult> Send(List<NftReciever> nftRecievers)
         {
-            int? validStatus = null;
             try
             {
+                // create a batch 
+                using ServiceBusMessageBatch messageBatch = await AzureServiceBusSender.CreateMessageBatchAsync();
                 using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
                 {
                     await db.OpenAsync();
-                    var claimableParameters = new { NftData = nftReciever.NftData };
-                    var claimableSql = "select * from claimable where nftdata = @NftData";
-                    var claimableResult = await db.QueryAsync<Claimable>(claimableSql, claimableParameters);
-                    if (claimableResult.Count() == 1)
+                    foreach(NftReciever nftReciever in nftRecievers)
                     {
-                        var allowListParameters = new { Address = nftReciever.Address, NftData = nftReciever.NftData };
-                        var allowListSql = "select * from allowlist where nftdata = @NftData and address = @Address";
-                        var allowListResult = await db.QueryAsync<AllowList>(allowListSql, allowListParameters);
-                        if (allowListResult.Count() == 1)
+                        var claimableParameters = new { NftData = nftReciever.NftData };
+                        var claimableSql = "select * from claimable where nftdata = @NftData";
+                        var claimableResult = await db.QueryAsync<Claimable>(claimableSql, claimableParameters);
+                        if (claimableResult.Count() == 1)
                         {
-                            var claimedListParameters = new { Address = nftReciever.Address, NftData = nftReciever.NftData };
-                            var claimedListSql = "select * from claimed where nftdata = @NftData and address = @Address";
-                            var claimedListResult = await db.QueryAsync<Claimed>(claimedListSql, claimedListParameters);
-                            if (claimedListResult.Count() == 0)
+                            var allowListParameters = new { Address = nftReciever.Address, NftData = nftReciever.NftData };
+                            var allowListSql = "select * from allowlist where nftdata = @NftData and address = @Address";
+                            var allowListResult = await db.QueryAsync<AllowList>(allowListSql, allowListParameters);
+                            if (allowListResult.Count() == 1)
                             {
-                                validStatus = 0;
-                            }
-                            else
-                            {
-                                validStatus = 3;
+                                var claimedListParameters = new { Address = nftReciever.Address, NftData = nftReciever.NftData };
+                                var claimedListSql = "select * from claimed where nftdata = @NftData and address = @Address";
+                                var claimedListResult = await db.QueryAsync<Claimed>(claimedListSql, claimedListParameters);
+                                if (claimedListResult.Count() == 0)
+                                {
+                                    // try adding a message to the batch
+                                    if (!messageBatch.TryAddMessage(new ServiceBusMessage($"{JsonSerializer.Serialize(nftReciever)}")))
+                                    {
+                                        // if it is too large for the batch
+                                        throw new Exception($"The message is too large to fit in the batch.");
+                                    }
+                                }
                             }
                         }
-                        else
-                        {
-                            validStatus = 2;
-                        }
                     }
-                    else
-                    {
-                        validStatus = 1;
-                    }
+ 
                 }
 
-                if (validStatus == 0)
+                if (messageBatch.Count > 0)
                 {
                     try
                     {
-                        await AzureServiceBusSender.SendMessageAsync(new ServiceBusMessage($"{JsonSerializer.Serialize(nftReciever)}"));
+                        await AzureServiceBusSender.SendMessagesAsync(messageBatch);
                         Console.WriteLine($"A batch of messages has been published to the queue.");
                     }
                     finally
@@ -114,23 +112,11 @@ namespace MetaboyApi.Controllers
                         await AzureServiceBusClient.DisposeAsync();
 
                     }
-                    return Ok("Request added.");
-                }
-                else if(validStatus == 1)
-                {
-                    return BadRequest("Nft not claimable!");
-                }
-                else if (validStatus == 2)
-                {
-                    return BadRequest("This address is not in the allow list!");
-                }
-                else if (validStatus == 3)
-                {
-                    return BadRequest("This address has already claimed this Nft!");
+                    return Ok("Request added...");
                 }
                 else 
                 {
-                    return BadRequest("Something went wrong...");
+                    return BadRequest("No requests added...");
                 }
             }
             catch (Exception ex)
@@ -164,7 +150,7 @@ namespace MetaboyApi.Controllers
                     var canClaim = new { Address = address};
                     var canClaimSql = "select case when b.claimeddate is null then 'True' else 'False' End as Redeemable, a.nftdata, a.Amount from allowlist a left join claimed b on a.address = b.address and a.nftdata = b.nftdata where a.address = @Address and a.nftdata in (select nftdata from claimable) and b.claimeddate is null";
                     var canClaimResult = await db.QueryAsync<CanClaimV2>(canClaimSql, canClaim);
-                    if (canClaimResult.Count() >= 1)
+                    if (canClaimResult.Count() > 0)
                     {
                         validStatus = 0;
                     }
