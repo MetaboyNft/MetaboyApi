@@ -1,6 +1,6 @@
 ﻿namespace MetaboyApi.Models
 {
-    public class CanClaim
+    public class CanClaimV2
     {
         public string Redeemable { get; set; } = "False";
 

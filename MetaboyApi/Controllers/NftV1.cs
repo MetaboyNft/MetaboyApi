@@ -10,9 +10,10 @@ using System.Text.Json.Serialization;
 
 namespace MetaboyApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class NftController : ControllerBase
+    [Route("api/nft")]
+    [ApiVersion("1.0")]
+    public class NftV1Controller : ControllerBase
     {
         // connection string to your Service Bus namespace
         static string AzureServiceBusConnectionString = "";
@@ -30,7 +31,7 @@ namespace MetaboyApi.Controllers
 
         private IConfiguration _config;
 
-        public NftController(IConfiguration config)
+        public NftV1Controller(IConfiguration config)
         {
             _config = config;
             var clientOptions = new ServiceBusClientOptions() { TransportType = ServiceBusTransportType.AmqpWebSockets };
