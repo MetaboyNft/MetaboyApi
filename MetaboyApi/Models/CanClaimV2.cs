@@ -1,10 +1,10 @@
 ﻿namespace MetaboyApi.Models
 {
-    public class CanClaim
+    public class CanClaimV2
     {
         public string Redeemable { get; set; } = "False";
 
         public string NftData { get; set; } = "";
-        public string Amount { get; set; } = "0";
+        public int Amount { get; set; } = 0;
     }
 }
