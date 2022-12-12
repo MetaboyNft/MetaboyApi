@@ -116,7 +116,7 @@ namespace MetaboyApi.Controllers
                 }
                 else 
                 {
-                    return BadRequest("No requests added...");
+                    return BadRequest("Request not added...");
                 }
             }
             catch (Exception ex)
