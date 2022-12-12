@@ -180,7 +180,7 @@ namespace MetaboyApi.Controllers
                     }
                     else
                     {
-                        return BadRequest(claim.Amount);
+                        return BadRequest("No valid claims...");
                     }
                 }
             }
