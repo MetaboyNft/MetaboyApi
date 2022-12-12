@@ -162,7 +162,7 @@ namespace MetaboyApi.Controllers
                 {
                     await db.OpenAsync();
                     var canClaim = new { Address = address};
-                    var canClaimSql = "select case when b.claimeddate is null then 'True' else 'False' End as Redeemable, a.nftdata, a.Amount from allowlist a left join claimed b on a.address = b.address and a.nftdata = b.nftdata where a.address = @Address and a.nftdata in (select nftdata from claimable)";
+                    var canClaimSql = "select case when b.claimeddate is null then 'True' else 'False' End as Redeemable, a.nftdata, a.Amount from allowlist a left join claimed b on a.address = b.address and a.nftdata = b.nftdata where a.address = @Address and a.nftdata in (select nftdata from claimable) and b.claimeddate is null";
                     var canClaimResult = await db.QueryAsync<CanClaimV2>(canClaimSql, canClaim);
                     if (canClaimResult.Count() >= 1)
                     {
@@ -179,7 +179,7 @@ namespace MetaboyApi.Controllers
                     }
                     else
                     {
-                        return BadRequest("No valid claims...");
+                        return BadRequest(canClaimResult.ToList());
                     }
                 }
             }
