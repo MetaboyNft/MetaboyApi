@@ -14,7 +14,7 @@ namespace MetaboyApi.Controllers
     [ApiController]
     [Route("api/nft")]
     [ApiVersion("3.0")]
-    public class NftV3 : ControllerBase
+    public class NftV3Controller : ControllerBase
     {
         // connection string to your Service Bus namespace
         static string AzureServiceBusConnectionString = "";
@@ -32,7 +32,7 @@ namespace MetaboyApi.Controllers
 
         private IConfiguration _config;
 
-        public NftV3(IConfiguration config)
+        public NftV3Controller(IConfiguration config)
         {
             _config = config;
             var clientOptions = new ServiceBusClientOptions() { TransportType = ServiceBusTransportType.AmqpWebSockets };
@@ -60,7 +60,7 @@ namespace MetaboyApi.Controllers
         /// <response code="400">If something is wrong with the request</response>
         [HttpPost]
         [Route("claim")]
-        public async Task<IActionResult> Send(List<NftReciever> nftRecievers) // nftReciever { Address, NftData}
+        public async Task<IActionResult> Send(List<NftReciever> nftRecievers) // nftReciever { Address, NftData }
         {
             try
             {
