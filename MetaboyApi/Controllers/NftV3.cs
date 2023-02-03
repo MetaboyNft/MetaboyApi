@@ -77,7 +77,7 @@ namespace MetaboyApi.Controllers
                             NftData = nftReciever.NftData
                         };
                         var claimableSql = "SELECT * FROM Claimable WHERE nftdata = @NftData";
-                        var claimableResult = await db.QueryAsync<Claimable>(claimableSql, claimableParameters);
+                        var claimableResult = await db.QueryAsync<CanClaimV3>(claimableSql, claimableParameters);
                         if (claimableResult.Count() == 1)
                         {
                             // Find matching Address & NftData record
