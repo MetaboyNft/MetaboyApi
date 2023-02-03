@@ -162,7 +162,7 @@ namespace MetaboyApi.Controllers
                     };
 
                     var canClaimSql = "SELECT * FROM AvailableClaims WHERE Address = @Address AND Amount > @MinimumAmount";
-                    var canClaimResult = await db.QueryAsync<CanClaimV3>(canClaimSql, canClaimParameters);
+                    var canClaimResult = await db.QueryAsync<AllowableClaim>(canClaimSql, canClaimParameters);
                     
                     if (canClaimResult.Count() > 0)
                     {
