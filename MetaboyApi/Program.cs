@@ -39,11 +39,11 @@ namespace MetaboyApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1",
+                c.SwaggerDoc("v3",
                     new OpenApiInfo
                     {
-                        Version = "v1",
-                        Title = "MetaBoy API - V1",
+                        Version = "v3",
+                        Title = "MetaBoy API - V3",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
                         {
@@ -68,7 +68,6 @@ namespace MetaboyApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
