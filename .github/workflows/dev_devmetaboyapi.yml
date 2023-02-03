@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'devmetaboyapi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A6B455C7EF70440CB795A1E5F1822B47 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3E154D198D3B4270A50714D2E8D89F0A }}
           package: .
