@@ -53,7 +53,6 @@ namespace MetaboyApi.Controllers
         ///     {
         ///         "Address" : "0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd",
         ///         "NftData" : "0x14e15ad24d034f0883e38bcf95a723244a9a22e17d47eb34aa2b91220be0adC4",
-        ///         "api-version : 3.0"
         ///     }
         /// </remarks>
         /// <response code="200">If a claim is added</response>
@@ -72,20 +71,13 @@ namespace MetaboyApi.Controllers
                     foreach(NftReciever nftReciever in nftRecievers)
                     {
                         // Ensure Nft is in the Claimable table
-                        var claimableParameters = new 
-                        { 
-                            NftData = nftReciever.NftData
-                        };
+                        var claimableParameters = new { NftData = nftReciever.NftData };
                         var claimableSql = "SELECT * FROM Claimable WHERE NftData = @NftData";
                         var claimableResult = await db.QueryAsync<Claimable>(claimableSql, claimableParameters);
                         if (claimableResult.Count() == 1)
                         {
                             // Obtain valid Claim record
-                            var allowListParameters = new 
-                            { 
-                                Address = nftReciever.Address,
-                                NftData = nftReciever.NftData
-                            };
+                            var allowListParameters = new { Address = nftReciever.Address, NftData = nftReciever.NftData };
                             var allowListSql = "SELECT * FROM AvailableClaims WHERE nftdata = @NftData and address = @Address AND Amount > 0";
                             var allowListResult = await db.QueryAsync<AllowableClaim>(allowListSql, allowListParameters);
                             if (allowListResult.Count() == 1)
@@ -155,11 +147,7 @@ namespace MetaboyApi.Controllers
                 {
                     await db.OpenAsync();
                     // Check AvailableClaims Table with matching Address
-                    var canClaimParameters = new 
-                    { 
-                        Address = address,
-                        MinimumAmount = 0
-                    };
+                    var canClaimParameters = new { Address = address, MinimumAmount = 0 };
 
                     var canClaimSql = "SELECT * FROM AvailableClaims WHERE Address = @Address AND Amount > @MinimumAmount";
                     var canClaimResult = await db.QueryAsync<AllowableClaim>(canClaimSql, canClaimParameters);
