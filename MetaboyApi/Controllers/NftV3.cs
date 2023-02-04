@@ -1,13 +1,9 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Dapper;
-using Gaia.Models;
 using MetaboyApi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.Data.SqlClient;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MetaboyApi.Controllers
 {
