@@ -47,8 +47,8 @@ namespace MetaboyApi.Controllers
         ///
         ///     POST /claim
         ///     {
-        ///         "Address" : "0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd",
-        ///         "NftData" : "0x14e15ad24d034f0883e38bcf95a723244a9a22e17d47eb34aa2b91220be0adC4",
+        ///         "Address" : "0xd2af47d16b14d6579884eec8a86ce7bf9fdb05bb",
+        ///         "NftData" : "0x2b8c1d8c554dfa85b3dfaaa580ffeb616adbc17364eff8155b33cf1f70bd9ca3",
         ///     }
         /// </remarks>
         /// <response code="200">If a claim is added</response>
@@ -128,7 +128,7 @@ namespace MetaboyApi.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /redeemable?address=0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd
+        ///     GET /redeemable?address=0xd2af47d16b14d6579884eec8a86ce7bf9fdb05bb
         /// </remarks>
         /// <response code="200">If a claim is redeemable</response>
         /// <response code="400">If something is wrong with the request</response>
