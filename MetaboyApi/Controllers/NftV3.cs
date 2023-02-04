@@ -74,11 +74,11 @@ namespace MetaboyApi.Controllers
                         {
                             // Obtain valid Claim record
                             var allowListParameters = new { Address = nftReciever.Address, NftData = nftReciever.NftData };
-                            var allowListSql = "SELECT * FROM AvailableClaims WHERE nftdata = @NftData and address = @Address AND Amount > 0";
+                            var allowListSql = "SELECT * FROM AllowList WHERE nftdata = @NftData and address = @Address AND Amount > 0";
                             var allowListResult = await db.QueryAsync<AllowableClaim>(allowListSql, allowListParameters);
                             if (allowListResult.Count() == 1)
                             {
-                                // Pass along valid AvailableClaims (Address, NftName, Amount) to MessageProcessor
+                                // Pass along valid AllowList (Address, NftName, Amount) to MessageProcessor
                                 if (!messageBatch.TryAddMessage(new ServiceBusMessage($"{JsonSerializer.Serialize(nftReciever)}")))
                                 {
                                     // if it is too large for the batch
@@ -142,10 +142,10 @@ namespace MetaboyApi.Controllers
                 using (SqlConnection db = new System.Data.SqlClient.SqlConnection(AzureSqlServerConnectionString))
                 {
                     await db.OpenAsync();
-                    // Check AvailableClaims Table with matching Address
+                    // Check AllowList Table with matching Address
                     var canClaimParameters = new { Address = address, MinimumAmount = 0 };
 
-                    var canClaimSql = "SELECT * FROM AvailableClaims WHERE Address = @Address AND Amount > @MinimumAmount";
+                    var canClaimSql = "SELECT * FROM AllowList WHERE Address = @Address AND Amount > @MinimumAmount";
                     var canClaimResult = await db.QueryAsync<AllowableClaim>(canClaimSql, canClaimParameters);
                     
                     if (canClaimResult.Count() > 0)
