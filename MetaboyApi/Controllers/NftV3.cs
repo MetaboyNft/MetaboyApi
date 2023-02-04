@@ -54,13 +54,14 @@ namespace MetaboyApi.Controllers
         ///         "Address" : "0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd",
         ///         "NftData" : "0x14e15ad24d034f0883e38bcf95a723244a9a22e17d47eb34aa2b91220be0adC4",
         ///         "Amount"  : "1"
+        ///         "api-version : 3.0"
         ///     }
         /// </remarks>
         /// <response code="200">If a claim is added</response>
         /// <response code="400">If something is wrong with the request</response>
         [HttpPost]
         [Route("claim")]
-        public async Task<IActionResult> Send(List<NftReciever> nftRecievers) // nftReciever { Address, NftData }
+        public async Task<IActionResult> Send(List<NftReciever> nftRecievers) // List<nftReciever> { Address, NftData, Amount }
         {
             try
             {
