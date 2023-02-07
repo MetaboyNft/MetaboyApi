@@ -25,6 +25,7 @@ namespace MetaboyApi
             });
 
             builder.Services.AddControllers();
+            
             builder.Services.AddApiVersioning(o =>
             {
                 o.AssumeDefaultVersionWhenUnspecified = true;
@@ -39,29 +40,63 @@ namespace MetaboyApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "MetaBoy API - v1",
+                        Description = "API for the MetaBoy project",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "MetaBoy NFT Github",
+                            Url = new Uri("https://github.com/MetaboyNFT")
+                        }
+                    });
+                c.SwaggerDoc("v2",
+                    new OpenApiInfo
+                    {
+                        Version = "v2",
+                        Title = "MetaBoy API - v2",
+                        Description = "API for the MetaBoy project",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "MetaBoy NFT Github",
+                            Url = new Uri("https://github.com/MetaboyNFT")
+                        }
+                    });
                 c.SwaggerDoc("v3",
                     new OpenApiInfo
                     {
                         Version = "v3",
-                        Title = "MetaBoy API - V3",
+                        Title = "MetaBoy API - v3",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
                         {
-                            Name = "MetaBoy NFT",
+                            Name = "MetaBoy NFT Github",
                             Url = new Uri("https://github.com/MetaboyNFT")
                         }
-                    }
-                 );
+                    });
+                
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+            
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            
 
             var app = builder.Build();
 
             app.UseCors("AllowAll");
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetaBoy Api v1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "MetaBoy Api v2");
+                c.SwaggerEndpoint("/swagger/v3/swagger.json", "MetaBoy Api v3");
+            });
 
             // Configure the HTTP request pipeline.
 
