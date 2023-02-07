@@ -40,10 +40,10 @@ namespace MetaboyApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1",
+                c.SwaggerDoc("v3",
                     new OpenApiInfo
                     {
-                        Version = "v1",
+                        Version = "v3",
                         Title = "MetaBoy API",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
@@ -64,10 +64,10 @@ namespace MetaboyApi
                             Url = new Uri("https://github.com/MetaboyNFT")
                         }
                     });
-                c.SwaggerDoc("v3",
+                c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
-                        Version = "v3",
+                        Version = "v1",
                         Title = "MetaBoy API",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
@@ -93,9 +93,9 @@ namespace MetaboyApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetaBoy API v1");
-                c.SwaggerEndpoint("/swagger/v2/swagger.json", "MetaBoy API v2");
                 c.SwaggerEndpoint("/swagger/v3/swagger.json", "MetaBoy API v3");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "MetaBoy API v2");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetaBoy API v1");
             });
 
             // Configure the HTTP request pipeline.

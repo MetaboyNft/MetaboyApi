@@ -41,7 +41,7 @@ namespace MetaboyApi.Controllers
         }
 
         /// <summary>
-        /// Adds a claim
+        /// Adds a claim to transfer queue that has been added to allowlist and does not have a matching address/nftdata record in Claimed table
         /// </summary>
         /// <param name="nftRecievers"></param>
         /// <returns>If the claim was added</returns>
