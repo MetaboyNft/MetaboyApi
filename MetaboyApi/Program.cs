@@ -44,7 +44,7 @@ namespace MetaboyApi
                     new OpenApiInfo
                     {
                         Version = "v1",
-                        Title = "MetaBoy API - v1",
+                        Title = "MetaBoy API",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
                         {
@@ -56,7 +56,7 @@ namespace MetaboyApi
                     new OpenApiInfo
                     {
                         Version = "v2",
-                        Title = "MetaBoy API - v2",
+                        Title = "MetaBoy API",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
                         {
@@ -68,7 +68,7 @@ namespace MetaboyApi
                     new OpenApiInfo
                     {
                         Version = "v3",
-                        Title = "MetaBoy API - v3",
+                        Title = "MetaBoy API",
                         Description = "API for the MetaBoy project",
                         Contact = new OpenApiContact
                         {
@@ -93,9 +93,9 @@ namespace MetaboyApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetaBoy Api v1");
-                c.SwaggerEndpoint("/swagger/v2/swagger.json", "MetaBoy Api v2");
-                c.SwaggerEndpoint("/swagger/v3/swagger.json", "MetaBoy Api v3");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetaBoy API v1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "MetaBoy API v2");
+                c.SwaggerEndpoint("/swagger/v3/swagger.json", "MetaBoy API v3");
             });
 
             // Configure the HTTP request pipeline.
