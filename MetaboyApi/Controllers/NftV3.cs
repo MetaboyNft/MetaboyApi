@@ -38,7 +38,7 @@ namespace MetaboyApi.Controllers
         }
 
         /// <summary>
-        /// Adds a claim
+        /// Adds a claim to transfer queue that has been added to allowlist
         /// </summary>
         /// <param name="nftRecievers"></param>
         /// <returns>If the claim was added</returns>
@@ -130,7 +130,7 @@ namespace MetaboyApi.Controllers
         ///
         ///     GET /redeemable?address=0xd2af47d16b14d6579884eec8a86ce7bf9fdb05bb
         /// </remarks>
-        /// <response code="200">If a claim is redeemable</response>
+        /// <response code="200">If an address has at least 1 claim that is redeemable</response>
         /// <response code="400">If something is wrong with the request</response>
         [HttpGet]
         [Route("redeemable")]
