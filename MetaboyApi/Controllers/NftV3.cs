@@ -83,7 +83,7 @@ namespace MetaboyApi.Controllers
                                 if (!messageBatch.TryAddMessage(new ServiceBusMessage($"{JsonSerializer.Serialize(nftReciever)}")))
                                 {
                                     // if it is too large for the batch
-                                    throw new Exception($"[ERROR]The message is too large to fit in the batch.");
+                                    throw new Exception($"[ERROR] The message is too large to fit in the batch.");
                                 }
                                 else
                                 {
@@ -99,10 +99,6 @@ namespace MetaboyApi.Controllers
                         else
                         {
                             throw new Exception($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"[ERROR] No records found for Claimable {nftReciever.NftData}");
                         }
                     }
                     await db.CloseAsync();
