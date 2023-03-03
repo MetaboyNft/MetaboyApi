@@ -93,12 +93,12 @@ namespace MetaboyApi.Controllers
                             }
                             else
                             {
-                               throw new Exception($"[REJECTED CLAIM] Record not found in AllowList - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
+                                return BadRequest($"[REJECTED CLAIM] Record not found in AllowList - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
                             }
                         }
                         else
                         {
-                            throw new Exception($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
+                            return BadRequest($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
                         }
                     }
                     await db.CloseAsync();
@@ -126,7 +126,7 @@ namespace MetaboyApi.Controllers
                         await AzureServiceBusClient.DisposeAsync();
 
                     }
-                    return Ok($"Added {messageBatch.Count} entries to Service Bus");
+                    return Ok($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
                 }
                 else 
                 {
