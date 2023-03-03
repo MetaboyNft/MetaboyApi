@@ -57,6 +57,7 @@ namespace MetaboyApi.Controllers
         [Route("claim")]
         public async Task<IActionResult> Send(List<NftReciever> nftRecievers) // List<nftReciever> { Address, NftData }
         {
+            Console.WriteLine($"[INFO] API Has recieved a claim request for {nftRecievers.Count()} claims.");
             try
             {
                 // create a batch 
@@ -99,6 +100,10 @@ namespace MetaboyApi.Controllers
                         {
                             throw new Exception($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
                         }
+                        else
+                        {
+                            Console.WriteLine($"[ERROR] No records found for Claimable {nftReciever.NftData}");
+                        }
                     }
                     await db.CloseAsync();
  
@@ -110,6 +115,12 @@ namespace MetaboyApi.Controllers
                     {
                         await AzureServiceBusSender.SendMessagesAsync(messageBatch);
                         Console.WriteLine($"A batch of messages has been published to the queue.");
+                        // DEBUG
+                        Console.WriteLine($"[DEBUG INFO] Passed {messageBatch.Count} to Service Bus");
+                        foreach (NftReciever nftreciever in nftRecievers)
+                        {
+                            Console.WriteLine($"[DEBUG INFO] Passed to bus : {nftreciever.Address} - {nftreciever.NftData}");
+                        }
                     }
                     finally
                     {
@@ -119,7 +130,7 @@ namespace MetaboyApi.Controllers
                         await AzureServiceBusClient.DisposeAsync();
 
                     }
-                    return Ok("Request added...");
+                    return Ok($"Added {messageBatch.Count} entries to Service Bus");
                 }
                 else 
                 {
