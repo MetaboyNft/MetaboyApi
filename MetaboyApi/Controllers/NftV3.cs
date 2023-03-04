@@ -131,8 +131,8 @@ namespace MetaboyApi.Controllers
                         await AzureServiceBusClient.DisposeAsync();
 
                     }
-                    Console.WriteLine($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
-                    return Ok($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
+                    Console.WriteLine($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First().Address}");
+                    return Ok($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First().Address}");
                 }
                 else 
                 {
