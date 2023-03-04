@@ -83,6 +83,7 @@ namespace MetaboyApi.Controllers
                                 if (!messageBatch.TryAddMessage(new ServiceBusMessage($"{JsonSerializer.Serialize(nftReciever)}")))
                                 {
                                     // if it is too large for the batch
+                                    Console.WriteLine($"[ERROR] The message is too large to fit in the batch.");
                                     throw new Exception($"[ERROR] The message is too large to fit in the batch.");
                                 }
                                 else
@@ -93,11 +94,13 @@ namespace MetaboyApi.Controllers
                             }
                             else
                             {
+                                Console.WriteLine($"[REJECTED CLAIM] Record not found in AllowList - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
                                 return BadRequest($"[REJECTED CLAIM] Record not found in AllowList - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
                             }
                         }
                         else
                         {
+                            Console.WriteLine($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
                             return BadRequest($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
                         }
                     }
@@ -126,11 +129,12 @@ namespace MetaboyApi.Controllers
                         await AzureServiceBusClient.DisposeAsync();
 
                     }
-                    return Ok($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
+                    Console.WriteLine($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
+                    return Ok($"Added {messageBatch.Count} entries to Service Bus \n {nftRecievers}");
                 }
                 else 
                 {
-                    return BadRequest("Request not added...");
+                    return BadRequest("$[REJECTED CLAIM] No records to submit!");
                 }
             }
             catch (Exception ex)
