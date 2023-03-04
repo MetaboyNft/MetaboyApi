@@ -57,6 +57,7 @@ namespace MetaboyApi.Controllers
         [Route("claim")]
         public async Task<IActionResult> Send(List<NftReciever> nftRecievers) // List<nftReciever> { Address, NftData }
         {
+            Console.WriteLine($"[INFO] API Has recieved a claim request for {nftRecievers.Count()} claims.");
             try
             {
                 // create a batch 
@@ -82,10 +83,25 @@ namespace MetaboyApi.Controllers
                                 if (!messageBatch.TryAddMessage(new ServiceBusMessage($"{JsonSerializer.Serialize(nftReciever)}")))
                                 {
                                     // if it is too large for the batch
-                                    throw new Exception($"The message is too large to fit in the batch.");
+                                    Console.WriteLine($"[ERROR] The message is too large to fit in the batch.");
+                                    throw new Exception($"[ERROR] The message is too large to fit in the batch.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"[CLAIM SUBMITTED] Claim passed to Service Bus - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
                                 }
                                 
                             }
+                            else
+                            {
+                                Console.WriteLine($"[REJECTED CLAIM] Record not found in AllowList - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
+                                return BadRequest($"[REJECTED CLAIM] Record not found in AllowList - Address: {nftReciever.Address} NftData: {nftReciever.NftData}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
+                            return BadRequest($"[REJECTED CLAIM] NftData not found in Claimable: {nftReciever.NftData}");
                         }
                     }
                     await db.CloseAsync();
@@ -96,8 +112,16 @@ namespace MetaboyApi.Controllers
                 {
                     try
                     {
+                        // Messages are successuflly hitting the service bus - what happens next? They dont all seem to be accepted by APIMessageProcessor [3/3/2023]
+                        // Ideally we need to be able to pass back what happens to the message.
                         await AzureServiceBusSender.SendMessagesAsync(messageBatch);
                         Console.WriteLine($"A batch of messages has been published to the queue.");
+                        // DEBUG
+                        Console.WriteLine($"[DEBUG INFO] Passed {messageBatch.Count} to Service Bus");
+                        foreach (NftReciever nftreciever in nftRecievers)
+                        {
+                            Console.WriteLine($"[DEBUG INFO] Passed to bus : {nftreciever.Address} - {nftreciever.NftData}");
+                        }
                     }
                     finally
                     {
@@ -107,11 +131,12 @@ namespace MetaboyApi.Controllers
                         await AzureServiceBusClient.DisposeAsync();
 
                     }
-                    return Ok("Request added...");
+                    Console.WriteLine($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First().Address}");
+                    return Ok($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First().Address}");
                 }
                 else 
                 {
-                    return BadRequest("Request not added...");
+                    return BadRequest("$[REJECTED CLAIM] No records to submit!");
                 }
             }
             catch (Exception ex)
