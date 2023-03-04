@@ -112,6 +112,8 @@ namespace MetaboyApi.Controllers
                 {
                     try
                     {
+                        // Messages are successuflly hitting the service bus - what happens next? They dont all seem to be accepted by APIMessageProcessor [3/3/2023]
+                        // Ideally we need to be able to pass back what happens to the message.
                         await AzureServiceBusSender.SendMessagesAsync(messageBatch);
                         Console.WriteLine($"A batch of messages has been published to the queue.");
                         // DEBUG
@@ -130,7 +132,7 @@ namespace MetaboyApi.Controllers
 
                     }
                     Console.WriteLine($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
-                    return Ok($"Added {messageBatch.Count} entries to Service Bus \n {nftRecievers}");
+                    return Ok($"Added {messageBatch.Count} entries to Service Bus for {nftRecievers.First()}");
                 }
                 else 
                 {
